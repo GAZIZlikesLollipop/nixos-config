@@ -1,0 +1,67 @@
+#System config
+exec_always gammastep -O 2750
+output * mode 1920x1080@144Hz scale 1.5
+
+# Импорт переменных в систему, чтобы порталы знали про Wayland
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+
+# Автозапуск портала (обычно происходит сам, но так надежнее)
+exec /usr/lib/xdg-desktop-portal
+
+#Keyboard
+input * {
+    xkb_layout "us,ru"
+    xkb_variant ","
+    xkb_options "grp:win_space_toggle"
+}
+
+font pango:DejaVu Sans 10
+
+set $mod Mod4
+
+#Applications
+bindsym $mod+Return exec prime-run alacritty
+bindsym $mod+b exec prime-run firefox
+bindsym $mod+d exec prime-run wofi --show drun
+bindsym $mod+t exec prime-run Telegram
+bindsym $mod+s exec prime-run code
+bindsym $mod+Shift+s exec prime-run steam
+
+bindsym $mod+Shift+t exec ~/Software/legacy.sh 
+
+#Screenshot
+bindsym Print exec grim - | wl-copy
+bindsym $mod+Print exec grim -g "$(slurp)" - | wl-copy
+
+#System bindings
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+q kill
+bindsym $mod+Shift+e exec swaymsg exit
+
+#Workspace bindings
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+
+bindsym $mod+Shift+6 move container to workspace number 6
+
+#Window bindings
+bindsym $mod+Left focus left
+bindsym $mod+Right focus right
+bindsym $mod+Up focus up
+bindsym $mod+Down focus down
+
+# Переместить активное окно по тайлам
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
