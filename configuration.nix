@@ -123,7 +123,7 @@ in
           "${mod}+b" = "exec ${run} firefox";
           "${mod}+d" = "exec ${run} wofi --show drun";
           "${mod}+t" = "exec ${run} AyuGram";
-          "${mod}+s" = "exec ${run} code";
+          "${mod}+s" = "exec CHROME_EXECUTABLE=$(which google-chrome-stable) ${run} code";
           "${mod}+Shift+s" = "exec ${run} steam";
           "Print" = "exec grim - | wl-copy";
           "${mod}+Print" = "exec grim -g \"$(slurp)\" - | wl-copy";
@@ -156,8 +156,7 @@ in
       userSettings = {
         "workbench.colorTheme" = "Default Dark Modern";
         "dart.openDevTools" = "flutter";
-#        "editor.fontSize" = 12;
-#	 "window.zoomLevel" = 1;
+        "window.zoomLevel" = 1.5;
       };
 
       keybindings = [
@@ -225,7 +224,7 @@ in
             installation_mode = "force_installed";
             install_url = "https://addons.mozilla.org/firefox/downloads/latest/darkreader/latest.xpi";
           };
-          # Vimium-FF
+          # Vimium-C
           "vimium-c@gdh1995.cn" = {
             install_url = "https://addons.mozilla.org/firefox/downloads/latest/vimium-c/latest.xpi";
             installation_mode = "force_installed";
@@ -251,11 +250,11 @@ in
 
     home.packages = with pkgs; [
       alacritty wofi ayugram-desktop steam
-      grim slurp wl-clipboard gammastep obsidian xfce.thunar tree pwvucontrol bitwarden-desktop brightnessctl
+      grim slurp wl-clipboard gammastep obsidian xfce.thunar tree pwvucontrol bitwarden-desktop brightnessctl google-chrome
     ];
   };
 
-  # Automatic cleaning up system
+  # System
   services.openssh.enable = true;
   services.dbus.enable = true;
   zramSwap.enable = true;
@@ -273,7 +272,7 @@ in
     };
   };
 
-  # NVIDIA OPTIMUS
+  # Graphical drivers (менять в зависимости от железа!) 
   nixpkgs.config.allowUnfree = true;
   services.xserver.videoDrivers = [ "nvidia" ];
 
@@ -294,7 +293,7 @@ in
     };
   };
 
-  # Bootloader
+  # Bootloader (менять при любой переустановке!)
   boot.loader = {
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
