@@ -122,7 +122,7 @@ in
           "${mod}+Return" = "exec ${run} alacritty";
           "${mod}+b" = "exec ${run} firefox";
           "${mod}+d" = "exec ${run} wofi --show drun";
-          "${mod}+t" = "exec ${run} telegram-desktop";
+          "${mod}+t" = "exec ${run} AyuGram";
           "${mod}+s" = "exec ${run} code";
           "${mod}+Shift+s" = "exec ${run} steam";
           "Print" = "exec grim - | wl-copy";
@@ -250,7 +250,7 @@ in
     };
 
     home.packages = with pkgs; [
-      alacritty wofi telegram-desktop steam
+      alacritty wofi ayugram-desktop steam
       grim slurp wl-clipboard gammastep obsidian xfce.thunar tree pwvucontrol bitwarden-desktop brightnessctl
     ];
   };
