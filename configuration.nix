@@ -41,15 +41,15 @@ in
   programs.sway.enable = true;
   programs.fish.enable = true;
   environment.systemPackages = with pkgs; [
-    vim-full
     wget
     flutter
     polkit_gnome
     btop
     unzip
-    spotify
     git
     go
+    vim-full
+    wl-clipboard 
   ];
   
   # User
@@ -121,6 +121,7 @@ in
         in lib.mkOptionDefault {
           "${mod}+Return" = "exec ${run} alacritty";
           "${mod}+b" = "exec ${run} firefox";
+          "${mod}+m" = "exec ${run} spotify --ozone-platform-hint=auto --enable-features=WaylandWindowDecorations";
           "${mod}+d" = "exec ${run} wofi --show drun";
           "${mod}+t" = "exec ${run} AyuGram";
           "${mod}+s" = "exec CHROME_EXECUTABLE=$(which google-chrome-stable) ${run} code";
@@ -249,8 +250,12 @@ in
     };
 
     home.packages = with pkgs; [
-      alacritty wofi ayugram-desktop steam
-      grim slurp wl-clipboard gammastep obsidian xfce.thunar tree pwvucontrol bitwarden-desktop brightnessctl google-chrome
+      # Utility cli
+      grim slurp gammastep brightnessctl tree fastfetch
+      # Utility gui
+      wofi alacritty xfce.thunar pwvucontrol
+      # Own software
+      ayugram-desktop steam obsidian google-chrome spotify bitwarden-desktop
     ];
   };
 
