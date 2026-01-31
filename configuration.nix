@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 let
-  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
+  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-25.11.tar.gz";
 in
 {
   imports = [ 
@@ -141,12 +141,6 @@ in
     programs.vscode = {
       enable = true;
 
-      extensions = with pkgs.vscode-extensions; [
-        dart-code.dart-code
-        dart-code.flutter
-	vscodevim.vim
-      ];
-
       package = pkgs.vscode.override {
         commandLineArgs = [
           "--ozone-platform-hint=auto"
@@ -154,13 +148,19 @@ in
         ];
       }; 
 
-      userSettings = {
+      profiles.default.extensions = with pkgs.vscode-extensions; [
+        dart-code.dart-code
+        dart-code.flutter
+	vscodevim.vim
+      ];
+
+      profiles.default.userSettings = {
         "workbench.colorTheme" = "Default Dark Modern";
         "dart.openDevTools" = "flutter";
         "window.zoomLevel" = 1.5;
       };
 
-      keybindings = [
+      profiles.default.keybindings = [
         {
           key = "alt+t";
           command = "workbench.action.terminal.toggleTerminal";
@@ -277,6 +277,20 @@ in
     };
   };
 
+  # Bootloader
+  boot.loader = {
+    efi = {
+      canTouchEfiVariables = true;
+      efiSysMountPoint = "/boot";
+    };
+    grub = {
+      enable = true;
+      device = "nodev";
+      useOSProber = true;
+      efiSupport = true;
+    }; 
+  };
+
   # Graphical drivers (менять в зависимости от железа!) 
   nixpkgs.config.allowUnfree = true;
   services.xserver.videoDrivers = [ "nvidia" ];
@@ -296,12 +310,5 @@ in
       intelBusId = "PCI:0:0:2";
       nvidiaBusId = "PCI:1:0:0";
     };
-  };
-
-  # Bootloader (менять при любой переустановке!)
-  boot.loader = {
-    systemd-boot.enable = true;
-    efi.canTouchEfiVariables = true;
-    efi.efiSysMountPoint = "/boot";
   };
 }
