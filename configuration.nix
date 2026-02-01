@@ -50,6 +50,7 @@ in
     go
     vim-full
     wl-clipboard 
+    steam-run
   ];
   
   # User
@@ -61,6 +62,12 @@ in
   };
 
   # Home Manager
+  xdg.portal = {
+    enable = true;
+    wlr.enable = true; # Специфично для Sway
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    config.common.default = "*"; # Для версий NixOS 23.11+
+  };
   home-manager.users.bob = { pkgs, lib, ... }: {
     home.stateVersion = "25.11";
     nixpkgs.config.allowUnfree = true;
@@ -106,6 +113,7 @@ in
           { command = "gammastep -O 2750"; always = true; }
           { command = "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway"; }
  	  { command = "brightnessctl set 100%"; }
+          { command = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"; }
         ];
         output."*" = {
           mode = "1920x1080@144Hz";
@@ -262,6 +270,7 @@ in
   # System
   services.openssh.enable = true;
   services.dbus.enable = true;
+  services.udisks2.enable = true;
   zramSwap.enable = true;
   system.stateVersion = "25.11";
 
