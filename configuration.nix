@@ -320,4 +320,16 @@ in
       nvidiaBusId = "PCI:1:0:0";
     };
   };
+
+  # Power optimization
+  services.thermald.enable = true;
+  services.auto-cpufreq = {
+    enable = true; 
+    settings = { 
+      charger = { 
+        governor = "performance"; turbo = "auto"; 
+      }; 
+    };
+  };
+
 }
