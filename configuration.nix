@@ -322,14 +322,19 @@ in
   };
 
   # Power optimization
+  boot.kernelParams = [ "intel_pstate=no_turbo" ];
+  services.power-profiles-daemon.enable = false;
   services.thermald.enable = true;
-  services.auto-cpufreq = {
-    enable = true; 
-    settings = { 
-      charger = { 
-        governor = "performance"; turbo = "auto"; 
-      }; 
+  services.tlp = {
+    enable = true;
+    settings = {
+      # Энергопотребление (EPP)
+      CPU_ENERGY_PERF_POLICY_ON_AC = "balance_performance";
+      CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+
+      # Твои пороги заряда (для ASUS TUF работают через tlp)
+      START_CHARGE_THRESH_BAT0 = 75;
+      STOP_CHARGE_THRESH_BAT0 = 80;
     };
   };
-
 }
