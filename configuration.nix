@@ -52,6 +52,11 @@ in
     wl-clipboard 
     steam-run
   ];
+
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;
+  };
   
   # User
   users.users.bob = {
@@ -256,14 +261,13 @@ in
         };
       };
     };
-
     home.packages = with pkgs; [
       # Utility cli
       grim slurp gammastep brightnessctl tree fastfetch
       # Utility gui
       wofi alacritty xfce.thunar pwvucontrol
       # Own software
-      ayugram-desktop steam obsidian google-chrome spotify bitwarden-desktop
+      ayugram-desktop obsidian google-chrome spotify bitwarden-desktop
     ];
   };
 
@@ -304,6 +308,10 @@ in
   # Graphical drivers
   nixpkgs.config.allowUnfree = true;
   services.xserver.videoDrivers = [ "nvidia" ];
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
 
   hardware.nvidia = {
     modesetting.enable = true;
@@ -330,6 +338,14 @@ in
   services.tlp = {
     enable = true;
     settings = {
+      # Полное отключение Turbo Boost
+      CPU_BOOST_ON_AC = 0;
+      CPU_BOOST_ON_BAT = 0;
+
+      # Отключение аппаратного буста Intel (HWP)
+      CPU_HWP_DYN_BOOST_ON_AC = 0;
+      CPU_HWP_DYN_BOOST_ON_BAT = 0;
+
       # Энергопотребление (EPP)
       CPU_ENERGY_PERF_POLICY_ON_AC = "balance_performance";
       CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
@@ -337,6 +353,7 @@ in
       # Твои пороги заряда (для ASUS TUF работают через tlp)
       START_CHARGE_THRESH_BAT0 = 75;
       STOP_CHARGE_THRESH_BAT0 = 80;
+      USB_AUTOSUSPEND = 0;
     };
   };
 }
